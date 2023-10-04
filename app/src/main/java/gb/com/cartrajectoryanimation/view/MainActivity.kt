@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnStart.setOnClickListener {
             drawingView.post {
                 drawingView.drawRandomPath()
+                drawingView.animateCarAlongPath()
             }
         }
     }

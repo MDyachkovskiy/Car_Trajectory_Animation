@@ -1,10 +1,12 @@
 package gb.com.cartrajectoryanimation.view
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.PathMeasure
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.View
@@ -48,8 +50,25 @@ class DrawingView(
     }
 
     fun setCarPosition(fraction: Float) {
-        carPosition.x = fraction * width
-        carPosition.y = fraction * height
+
+        val pathMeasure = PathMeasure(path, false)
+        val pathLength = pathMeasure.length
+        val pos = FloatArray(2)
+        pathMeasure.getPosTan(pathLength * fraction, pos, null)
+
+        carPosition.x = pos[0]
+        carPosition.y = pos[1]
         invalidate()
+    }
+
+    fun animateCarAlongPath() {
+        val animator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = 5000
+            addUpdateListener {
+                val fraction = it.animatedValue as Float
+                setCarPosition(fraction)
+            }
+        }
+        animator.start()
     }
 }
