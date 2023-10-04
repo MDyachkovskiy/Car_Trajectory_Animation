@@ -19,6 +19,10 @@ class DrawingView(
     attrs: AttributeSet
 ) : View(context, attrs) {
 
+    private var drawLength = 0f
+    private var path = Path()
+    private var carPosition = PointF()
+
     private val pathPaint: Paint = Paint().apply {
         style = Paint.Style.STROKE
         strokeWidth = 20f
@@ -34,13 +38,26 @@ class DrawingView(
         pathPaint.shader = gradient
     }
 
+    private fun initPathAnimation() {
+
+        val pathMeasure = PathMeasure(path, false)
+        val pathLength = pathMeasure.length
+
+        val animator = ValueAnimator.ofFloat(0f, 1f)
+        animator.duration = 5000
+        animator.addUpdateListener {
+            drawLength = pathLength * it.animatedValue as Float
+            invalidate()
+        }
+        animator.start()
+    }
+
     private val carPaint: Paint = Paint().apply {
         color = Color.RED
         style = Paint.Style.FILL
     }
 
-    private var path = Path()
-    private var carPosition = PointF()
+
 
     fun drawRandomPath() {
         path.reset()
@@ -65,11 +82,17 @@ class DrawingView(
         }
         path.lineTo(width.toFloat(), height.toFloat())
         invalidate()
+
+        initPathAnimation()
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        canvas?.drawPath(path, pathPaint)
+
+        val tempPath = Path()
+        val pathMeasure = PathMeasure(path, false)
+        pathMeasure.getSegment(0f, drawLength, tempPath, true)
+        canvas?.drawPath(tempPath, pathPaint)
         canvas?.drawCircle(carPosition.x, carPosition.y, 20f, carPaint)
     }
 
