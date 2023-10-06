@@ -27,19 +27,31 @@ class DrawingView(
     private var drawLength = 0f
     private var path = Path()
     private var carPosition = PointF()
-    private val carIcon: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.car_icon)
-
-    private val newWidth = 65
-    private val aspectRatio =carIcon.width.toFloat() / carIcon.height.toFloat()
-    private val newHeight = (newWidth / aspectRatio).toInt()
-    private val scaledCarIcon = Bitmap.createScaledBitmap(carIcon, newWidth ,newHeight, false)
-
+    private lateinit var scaledCarIcon: Bitmap
     private var carRotation: Float = 0f
 
-    private val pathPaint: Paint = Paint().apply {
-        style = Paint.Style.STROKE
-        strokeWidth = 20f
-        pathEffect = DashPathEffect(floatArrayOf(30f, 10f), 0f)
+    private val pathPaint: Paint
+    private val newWidth = 65
+
+    init {
+        pathPaint = initilizePathPaint()
+        loadAndScaleCarIcon()
+    }
+
+    private fun initilizePathPaint(): Paint {
+        return Paint().apply {
+            style = Paint.Style.STROKE
+            strokeWidth = 20f
+            pathEffect = DashPathEffect(floatArrayOf(30f, 10f), 0f)
+        }
+    }
+
+    private fun loadAndScaleCarIcon() {
+        val carIcon: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.car_icon)
+        val aspectRatio =carIcon.width.toFloat() / carIcon.height.toFloat()
+        val newHeight = (newWidth / aspectRatio).toInt()
+        scaledCarIcon = Bitmap.createScaledBitmap(carIcon, newWidth ,newHeight, false)
+
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -51,8 +63,8 @@ class DrawingView(
         pathPaint.shader = gradient
     }
 
-    private fun initPathAnimation() {
 
+    private fun initPathAnimation() {
         val pathMeasure = PathMeasure(path, false)
         val pathLength = pathMeasure.length
 
@@ -94,13 +106,18 @@ class DrawingView(
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        drawPath(canvas)
+        drawCarIcon(canvas)
+    }
 
+    private fun drawPath(canvas: Canvas?){
         val tempPath = Path()
         val pathMeasure = PathMeasure(path, false)
-
         pathMeasure.getSegment(0f, drawLength, tempPath, true)
         canvas?.drawPath(tempPath, pathPaint)
+    }
 
+    private fun drawCarIcon(canvas: Canvas?) {
         val matrix = Matrix()
         matrix.postRotate(carRotation, scaledCarIcon.width / 2f,scaledCarIcon.height / 2f)
         matrix.postTranslate(
@@ -111,7 +128,6 @@ class DrawingView(
     }
 
     private fun setCarPosition(fraction: Float) {
-
         val pathMeasure = PathMeasure(path, false)
         val pathLength = pathMeasure.length
         val pos = FloatArray(2)
