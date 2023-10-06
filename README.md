@@ -1,8 +1,8 @@
 <h1 align="center" id="title">Car Trajectory Animation App</h1>
 
 <p id="description">
-  
   This educational project was completed as part of studies at Geekbrains. Application written in Kotlin. This application serves as a visual tool for simulating car movements on a map. 
+  
   Random Trajectory Generation:
   The application dynamically generates a random trajectory on the map. The trajectory is designed with multiple turns and curves to simulate a realistic path a vehicle might take on the road.
   
