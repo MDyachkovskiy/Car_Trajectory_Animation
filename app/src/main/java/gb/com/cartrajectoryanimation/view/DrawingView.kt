@@ -2,6 +2,8 @@ package gb.com.cartrajectoryanimation.view
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.DashPathEffect
@@ -13,6 +15,7 @@ import android.graphics.PointF
 import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
+import gb.com.cartrajectoryanimation.R
 
 class DrawingView(
     context: Context,
@@ -22,6 +25,12 @@ class DrawingView(
     private var drawLength = 0f
     private var path = Path()
     private var carPosition = PointF()
+    private val carIcon: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.car_icon)
+
+    private val newWidth = 65
+    private val aspectRatio =carIcon.width.toFloat() / carIcon.height.toFloat()
+    private val newHeight = (newWidth / aspectRatio).toInt()
+    private val scaledCarIcon = Bitmap.createScaledBitmap(carIcon, newWidth ,newHeight, false)
 
     private val pathPaint: Paint = Paint().apply {
         style = Paint.Style.STROKE
@@ -51,13 +60,6 @@ class DrawingView(
         }
         animator.start()
     }
-
-    private val carPaint: Paint = Paint().apply {
-        color = Color.RED
-        style = Paint.Style.FILL
-    }
-
-
 
     fun drawRandomPath() {
         path.reset()
@@ -93,7 +95,9 @@ class DrawingView(
         val pathMeasure = PathMeasure(path, false)
         pathMeasure.getSegment(0f, drawLength, tempPath, true)
         canvas?.drawPath(tempPath, pathPaint)
-        canvas?.drawCircle(carPosition.x, carPosition.y, 20f, carPaint)
+        canvas?.drawBitmap(scaledCarIcon,
+            carPosition.x - scaledCarIcon.width / 2,
+            carPosition.y - scaledCarIcon.height / 2, null)
     }
 
     private fun setCarPosition(fraction: Float) {
