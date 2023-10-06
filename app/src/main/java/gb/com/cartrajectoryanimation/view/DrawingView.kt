@@ -8,6 +8,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.LinearGradient
+import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PathMeasure
@@ -16,6 +17,7 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import gb.com.cartrajectoryanimation.R
+import kotlin.math.atan2
 
 class DrawingView(
     context: Context,
@@ -31,6 +33,8 @@ class DrawingView(
     private val aspectRatio =carIcon.width.toFloat() / carIcon.height.toFloat()
     private val newHeight = (newWidth / aspectRatio).toInt()
     private val scaledCarIcon = Bitmap.createScaledBitmap(carIcon, newWidth ,newHeight, false)
+
+    private var carRotation: Float = 0f
 
     private val pathPaint: Paint = Paint().apply {
         style = Paint.Style.STROKE
@@ -93,11 +97,17 @@ class DrawingView(
 
         val tempPath = Path()
         val pathMeasure = PathMeasure(path, false)
+
         pathMeasure.getSegment(0f, drawLength, tempPath, true)
         canvas?.drawPath(tempPath, pathPaint)
-        canvas?.drawBitmap(scaledCarIcon,
+
+        val matrix = Matrix()
+        matrix.postRotate(carRotation, scaledCarIcon.width / 2f,scaledCarIcon.height / 2f)
+        matrix.postTranslate(
             carPosition.x - scaledCarIcon.width / 2,
-            carPosition.y - scaledCarIcon.height / 2, null)
+            carPosition.y - scaledCarIcon.height / 2
+        )
+        canvas?.drawBitmap(scaledCarIcon, matrix, null)
     }
 
     private fun setCarPosition(fraction: Float) {
@@ -105,16 +115,18 @@ class DrawingView(
         val pathMeasure = PathMeasure(path, false)
         val pathLength = pathMeasure.length
         val pos = FloatArray(2)
-        pathMeasure.getPosTan(pathLength * fraction, pos, null)
-
+        val tan = FloatArray(2)
+        pathMeasure.getPosTan(pathLength * fraction, pos, tan)
         carPosition.x = pos[0]
         carPosition.y = pos[1]
+        val degrees = (atan2(tan[1].toDouble(), tan[0].toDouble()) * 180.0 / Math.PI).toFloat()
+        carRotation = degrees - 90
         invalidate()
     }
 
     fun animateCarAlongPath() {
         val animator = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = 10000
+            duration = 15000
             addUpdateListener {
                 val fraction = it.animatedValue as Float
                 setCarPosition(fraction)
