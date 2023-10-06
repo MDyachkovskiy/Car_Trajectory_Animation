@@ -1,4 +1,4 @@
-<h1 align="center" id="title">Map Geolocation App</h1>
+<h1 align="center" id="title">Car Trajectory Animation App</h1>
 
 <p id="description">
   
@@ -12,9 +12,7 @@
 
 <h2>Project Screenshots:</h2>
 
-<img src="https://i.ibb.co.com/nfxTWVw/IMG-20231006-141529.jpg" alt="project-screenshot" width="200" height="400/"> <img src="https://i.ibb.co.com/cL35r4j/IMG-20231006-141712.jpg" alt="project-screenshot" width="200" height="400/"> <img src="https://i.ibb.co.com/JxfjyD0/IMG-20230929-131016.jpg" alt="project-screenshot" width="200" height="400/">
-
-<img src="https://i.ibb.co.com/0qxpvcS/IMG-20231006-141732.jpg" alt="project-screenshot" width="200" height="400/">
+<img src="https://i.ibb.co.com/wC6HPbc/IMG-20231006-141529.jpg" alt="project-screenshot" width="200" height="400/"> <img src="https://i.ibb.co.com/cxFcGTS/IMG-20231006-141712.jpg" alt="project-screenshot" width="200" height="400/"> <img src="https://i.ibb.co.com/0qxpvcS/IMG-20231006-141732.jpg" alt="project-screenshot" width="200" height="400/">
 
   
 <h2>💻 Built with</h2>
