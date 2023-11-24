@@ -12,8 +12,11 @@
 
 <h2>Project Screenshots:</h2>
 
-<img src="https://i.ibb.co.com/wC6HPbc/IMG-20231006-141529.jpg" alt="project-screenshot" width="200" height="400/"> <img src="https://i.ibb.co.com/cxFcGTS/IMG-20231006-141712.jpg" alt="project-screenshot" width="200" height="400/"> <img src="https://i.ibb.co.com/0qxpvcS/IMG-20231006-141732.jpg" alt="project-screenshot" width="200" height="400/">
+<img src="https://gdurl.com/ofCn" alt="project-screenshot" width="200" height="400/"> <img src="https://gdurl.com/DvGu" alt="project-screenshot" width="200" height="400/"> 
 
+<h2>Application Demo Video:</h2>
+
+<p>Watch a demo of the application here: <a href="https://gdurl.com/QH5D" target="_blank">Car Trajectory App Demo Video</a></p>
   
 <h2>💻 Built with</h2>
 
